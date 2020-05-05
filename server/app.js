@@ -10,10 +10,31 @@ var position = {
 socketio.on('connection', socket => {
   socket.emit('position', position)
   socket.on('move', data => {
+    // Mouse movement
     position.x = data.x
     position.y = data.y
     console.log('x is: ', data)
-    socket.emit('position', position)
+    socketio.emit('position', position)
+    
+    // Button movement
+    // switch (data) {
+    //   case 'left':
+    //     position.x -= 5
+    //     socketio.emit('position', position)
+    //     break
+    //   case 'right':
+    //     position.x += 5
+    //     socketio.emit('position', position)
+    //     break
+    //   case 'up':
+    //     position.y -= 5
+    //     socketio.emit('position', position)
+    //     break
+    //   case 'down':
+    //     position.y += 5
+    //     socketio.emit('position', position)
+    //     break
+    // }
   })
 })
 
