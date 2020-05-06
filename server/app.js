@@ -42,7 +42,8 @@ socketio.on('connection', socket => {
 })
 
 http.listen(3000, () => {
-  console.log(`Server listening on http://${host}:${port}`);
+  console.log(`Server listening on 3000`);
+  // console.log(`Server listening on http://${host}:${port}`);
 });
 
 // Button movement
