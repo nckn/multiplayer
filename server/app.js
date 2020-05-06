@@ -17,7 +17,7 @@ var position = {
 
 var color = 0
 
-// var id = 0
+var id = 0
 
 // Assigning IDs
 // socketio.engine.generateId = function (req) {
@@ -68,11 +68,35 @@ var clients =[];
 //     });
 // });
 
+var sortedSockets = []
+
 socketio.on('connection', socket => {
   // Log ID
   // console.log('new id: ', socket.id); // writes 1 on the console
+  
+  var total = socketio.engine.clientsCount;
+  socketio.emit('getCount', total)
+
   // Set position
   socket.emit('position', position)
+
+  // Increment id
+  id++
+
+  // Logging the unique id
+  Object.keys(socketio.sockets.sockets).forEach(function(id) {
+    console.log("ID: ", id)  // socketId
+  })
+
+  var socketPair = {
+    id: id,
+    uuid: socket.id
+  }
+  // var my_id = id; //my_id = value for this exact socket connection
+  id++; //increment global id for further connnections
+  // Tell clients that there is a new one in town
+  socket.emit('user_connected', socketPair)
+
   // When move is detected
   socket.on('move', data => {
     // Mouse movement
@@ -82,8 +106,8 @@ socketio.on('connection', socket => {
     // console.log('clients: ', clients)
     socketio.emit('position', position)
 
-    var total = socketio.engine.clientsCount;
-    socketio.emit('getCount', total)
+    // var total = socketio.engine.clientsCount;
+    // socketio.emit('getCount', total)
     
   })
 
