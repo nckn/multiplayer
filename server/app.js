@@ -92,10 +92,6 @@ socketio.on('connection', socket => {
     id: id,
     uuid: socket.id
   }
-  // var my_id = id; //my_id = value for this exact socket connection
-  id++; //increment global id for further connnections
-  // Tell clients that there is a new one in town
-  socket.emit('user_connected', socketPair)
 
   // When move is detected
   socket.on('move', data => {
@@ -135,7 +131,13 @@ socketio.on('connection', socket => {
     clients.push(clientInfo);
     // Store client info
     socketio.emit('storeInfo', clientInfo)
-    return clientInfo
+
+    // var my_id = id; //my_id = value for this exact socket connection
+    id++; //increment global id for further connnections
+    // Tell clients that there is a new one in town
+    socket.emit('user_connected', socketPair)
+    return
+    // return clientInfo
   });
 
   socket.on('disconnect', function (data) {
