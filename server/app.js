@@ -38,28 +38,29 @@ socketio.on('connection', socket => {
     var total = socketio.engine.clientsCount;
     socketio.emit('getCount', total)
     
-    // Button movement
-    // switch (data) {
-    //   case 'left':
-    //     position.x -= 5
-    //     socketio.emit('position', position)
-    //     break
-    //   case 'right':
-    //     position.x += 5
-    //     socketio.emit('position', position)
-    //     break
-    //   case 'up':
-    //     position.y -= 5
-    //     socketio.emit('position', position)
-    //     break
-    //   case 'down':
-    //     position.y += 5
-    //     socketio.emit('position', position)
-    //     break
-    // }
   })
 })
 
 http.listen(3000, () => {
-  console.log('listening at :3000...');
+  console.log(`Server listening on http://${host}:${port}`);
 });
+
+// Button movement
+// switch (data) {
+//   case 'left':
+//     position.x -= 5
+//     socketio.emit('position', position)
+//     break
+//   case 'right':
+//     position.x += 5
+//     socketio.emit('position', position)
+//     break
+//   case 'up':
+//     position.y -= 5
+//     socketio.emit('position', position)
+//     break
+//   case 'down':
+//     position.y += 5
+//     socketio.emit('position', position)
+//     break
+// }

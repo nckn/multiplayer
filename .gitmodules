@@ -1,0 +1,3 @@
+[submodule "client"]
+	path = client
+	url = /Users/nielskonrad/Development/dev-konrad/multiplayer/client
