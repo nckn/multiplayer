@@ -89,8 +89,16 @@ socketio.on('connection', socket => {
 
   socket.on('changeAllColors', data => {
     // Mouse movement
-    color = data
-    socketio.emit('color', color)
+    color = data.color
+    console.log('id of it: ', data.id)
+    var obj = {color: color, id: data.id}
+    clients.forEach((element, index) => {
+      if (element.clientId === data.id) {
+        console.log('its a match')
+        obj = {color: color, id: index}
+      }
+    });
+    socketio.emit('color', obj)
   })
 
   // Store client info
