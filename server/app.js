@@ -15,7 +15,9 @@ var position = {
   y: 100
 }
 
-var id = 0
+var color = 0
+
+// var id = 0
 
 // Assigning IDs
 // socketio.engine.generateId = function (req) {
@@ -85,12 +87,19 @@ socketio.on('connection', socket => {
     
   })
 
+  socket.on('changeAllColors', data => {
+    // Mouse movement
+    color = data
+    socketio.emit('color', color)
+  })
+
   // Store client info
   socket.on('storeClientInfo', function (data) {
     var clientInfo = new Object();
     clientInfo.customId = data.customId;
     clientInfo.clientId = socket.id;
     // console.log('client Info: ', clientInfo)
+    // clientInfo.hooray = 'yay'
     clients.push(clientInfo);
     // Store client info
     socketio.emit('storeInfo', clientInfo)
