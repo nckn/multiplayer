@@ -74,8 +74,8 @@ socketio.on('connection', socket => {
   // Log ID
   // console.log('new id: ', socket.id); // writes 1 on the console
   
-  var total = socketio.engine.clientsCount;
-  socketio.emit('getCount', total)
+  // var total = socketio.engine.clientsCount;
+  // socketio.emit('getCount', total)
 
   // Set position
   socket.emit('position', position)
@@ -140,18 +140,40 @@ socketio.on('connection', socket => {
     
     // Send all clients
     socket.emit('all_clients', clients)
+
+    // Broadcast to all
+    var joining = {
+      joinId: socket.id,
+      joiners: clients,
+    }
+    socketio.sockets.emit('broadcast', joining)
+    
     return
     // return clientInfo
   });
 
   socket.on('disconnect', function (data) {
-    for (var i = 0, len = clients.length; i < len; ++i ){
+    // console.log(`someone is leaving: ${socket.id}`)
+    for (var i = 0, len = clients.length; i < len; ++i ) {
       var c = clients[i];
       if (c.clientId == socket.id) {
         clients.splice(i, 1);
+        console.log('client id thats getting rid of: ', c.clientId)
+        // Send message that someone left
+        socket.emit('client_leaving', c.clientId)
+        // console.log(`someone is leaving: ${socket.id}`)
+        var package = {
+          leavingId: c.clientId,
+          remainers: clients
+        }
+        socketio.sockets.emit('broadcast', package)
         break;
       }
     }
+
+    // Send all clients
+    socket.emit('all_clients', clients)
+    
   });
 
 })
