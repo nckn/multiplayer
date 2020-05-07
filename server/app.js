@@ -89,7 +89,8 @@ socketio.on('connection', socket => {
   })
 
   var socketPair = {
-    id: id,
+    // id: id,
+    id: socket.id,
     uuid: socket.id
   }
 
@@ -115,7 +116,7 @@ socketio.on('connection', socket => {
     clients.forEach((element, index) => {
       if (element.clientId === data.id) {
         console.log('its a match')
-        obj = {color: color, id: index}
+        obj = {color: color, id: element.clientId}
       }
     });
     socketio.emit('color', obj)
@@ -136,6 +137,9 @@ socketio.on('connection', socket => {
     id++; //increment global id for further connnections
     // Tell clients that there is a new one in town
     socket.emit('user_connected', socketPair)
+    
+    // Send all clients
+    socket.emit('all_clients', clients)
     return
     // return clientInfo
   });
