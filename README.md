@@ -13,8 +13,17 @@ https://stfalcon.com/en/blog/post/chat-app-creation-vue.js-nuxt.js-node.js-socke
 https://nuxt-chat-app.herokuapp.com/?message=noUser
 
 
+Pixelate
+https://redstapler.co/how-to-create-pixelated-image-with-javascript/
+
+pixelate filter
+https://hackernoon.com/creating-a-pixelation-filter-for-creative-coding-fc6dc1d728b2
 
 
 
 
 -->
+
+## TODO
+
+- get other pixel values on connect
