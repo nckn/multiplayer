@@ -24,6 +24,10 @@ https://hackernoon.com/creating-a-pixelation-filter-for-creative-coding-fc6dc1d7
 
 
 
+Blur
+http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html
+
+
 
 -->
 
