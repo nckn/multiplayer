@@ -2,6 +2,14 @@ const express = require('express')();
 const http = require('http').Server(express);
 const socketio = require('socket.io')(http);
 
+// socketio.of('/chat').clients((error, clients) => {
+//   if (error) throw error;
+//   console.log(clients); // => [PZDoMHjiu8PYfRiKAAAF, Anw2LatarvGVVXEIAAAD]
+// });
+
+// var clients = socketio.sockets.clients();
+// var clients = socketio.sockets.clients('room'); // all users from room `room`
+
 var position = {
   x: 100,
   y: 100
@@ -9,10 +17,18 @@ var position = {
 
 var color = 0
 var clients =[];
+// var id = 0
+// var sortedSockets = []
 
 socketio.on('connection', socket => {
   // Log ID
   // console.log('new id: ', socket.id); // writes 1 on the console
+  
+  // var total = socketio.engine.clientsCount;
+  // socketio.emit('getCount', total)
+
+  // Set position
+  // socket.emit('position', position)
 
   var socketPair = {
     // id: id,
@@ -20,35 +36,24 @@ socketio.on('connection', socket => {
     uuid: socket.id
   }
 
-  console.log('new socket: ', socket.id)
+  // When move is detected
+  // socket.on('move', data => {
+  //   // Mouse movement
+  //   position.x = data.x
+  //   position.y = data.y
+  //   // console.log('x is: ', data)
+  //   // console.log('clients: ', clients)
+  //   socketio.emit('position', position)
 
-  var clientObj = new Object();
-  // clientObj.customId = data.customId;
-  clientObj.clientId = socket.id;
-  // console.log('client Info: ', clientObj)
-  clients.push(clientObj);
-  // Store client info
-  // socketio.emit('storeInfo', clientInfo)
-
-  socket.emit('user_connected', socketPair)
-  
-  // Broadcast to all
-  // var joining = {
-  //   joinId: socket.id,
-  //   joiners: clients,
-  // }
-
-  // Broadcast joining
-  // socketio.sockets.emit('broadcast', joining)
-  
-  socket.on('fetch_others', () => {
-    socket.emit('all_clients', clients)
-  })
+  //   // var total = socketio.engine.clientsCount;
+  //   // socketio.emit('getCount', total)
+    
+  // })
 
   socket.on('changeAllColors', data => {
     // Mouse movement
     var color = data.color
-    // console.log('id of it: ', data.id)
+    console.log('id of it: ', data.id)
     var obj = {color: color, id: data.id}
     clients.forEach((element, index) => {
       if (element.clientId === data.id) {
@@ -60,6 +65,33 @@ socketio.on('connection', socket => {
     socketio.emit('color', obj)
   })
 
+  // Store client info
+  socket.on('storeClientInfo', function (data) {
+    var clientInfo = new Object();
+    clientInfo.customId = data.customId;
+    clientInfo.clientId = socket.id;
+    // console.log('client Info: ', clientInfo)
+    // clientInfo.hooray = 'yay'
+    clients.push(clientInfo);
+    // Store client info
+    socketio.emit('storeInfo', clientInfo)
+
+    socket.emit('user_connected', socketPair)
+    
+    // Send all clients
+    // socket.emit('all_clients', clients)
+
+    // Broadcast to all
+    var joining = {
+      joinId: socket.id,
+      joiners: clients,
+    }
+    socketio.sockets.emit('broadcast', joining)
+    
+    return
+    // return clientInfo
+  });
+
   socket.on('disconnect', function (data) {
     // console.log(`someone is leaving: ${socket.id}`)
     for (var i = 0, len = clients.length; i < len; ++i ) {
@@ -67,6 +99,9 @@ socketio.on('connection', socket => {
       if (c.clientId == socket.id) {
         clients.splice(i, 1);
         console.log('client id thats getting rid of: ', c.clientId)
+        // Send message that someone left
+        socket.emit('client_leaving', c.clientId)
+        // console.log(`someone is leaving: ${socket.id}`)
         var package = {
           leavingId: c.clientId,
           remainers: clients
@@ -77,13 +112,9 @@ socketio.on('connection', socket => {
     }
 
     // Send all clients
-    // socket.emit('all_clients', clients)
+    socket.emit('all_clients', clients)
     
   });
-
-  // socket.on('disconnect', data => {
-  //   console.log(`someone leaving: ${socket.id}`)
-  // })
 
 })
 
