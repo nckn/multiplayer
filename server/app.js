@@ -28,7 +28,7 @@ socketio.on('connection', socket => {
   // socketio.emit('getCount', total)
 
   // Set position
-  socket.emit('position', position)
+  // socket.emit('position', position)
 
   var socketPair = {
     // id: id,
@@ -37,27 +37,28 @@ socketio.on('connection', socket => {
   }
 
   // When move is detected
-  socket.on('move', data => {
-    // Mouse movement
-    position.x = data.x
-    position.y = data.y
-    // console.log('x is: ', data)
-    // console.log('clients: ', clients)
-    socketio.emit('position', position)
+  // socket.on('move', data => {
+  //   // Mouse movement
+  //   position.x = data.x
+  //   position.y = data.y
+  //   // console.log('x is: ', data)
+  //   // console.log('clients: ', clients)
+  //   socketio.emit('position', position)
 
-    // var total = socketio.engine.clientsCount;
-    // socketio.emit('getCount', total)
+  //   // var total = socketio.engine.clientsCount;
+  //   // socketio.emit('getCount', total)
     
-  })
+  // })
 
   socket.on('changeAllColors', data => {
     // Mouse movement
-    color = data.color
+    var color = data.color
     console.log('id of it: ', data.id)
     var obj = {color: color, id: data.id}
     clients.forEach((element, index) => {
       if (element.clientId === data.id) {
-        console.log('its a match')
+        // console.log('its a match')
+        element.color = color
         obj = {color: color, id: element.clientId}
       }
     });
@@ -78,7 +79,7 @@ socketio.on('connection', socket => {
     socket.emit('user_connected', socketPair)
     
     // Send all clients
-    socket.emit('all_clients', clients)
+    // socket.emit('all_clients', clients)
 
     // Broadcast to all
     var joining = {
