@@ -14,13 +14,12 @@ socketio.on('connection', socket => {
   // Log ID
   // console.log('new id: ', socket.id); // writes 1 on the console
 
-  var socketPair = {
-    // id: id,
+  var newClient = {
     id: socket.id,
-    uuid: socket.id
+    joining: true
   }
 
-  console.log('new socket: ', socket.id)
+  // console.log('new socket: ', socket.id)
 
   var clientObj = new Object();
   // clientObj.customId = data.customId;
@@ -30,7 +29,10 @@ socketio.on('connection', socket => {
   // Store client info
   // socketio.emit('storeInfo', clientInfo)
 
-  socket.emit('user_connected', socketPair)
+  console.log('clients: ', clients)
+
+  // socket.emit('user_connected', socketPair)
+  socketio.sockets.emit('broadcast', newClient)
   
   // Broadcast to all
   // var joining = {
@@ -43,13 +45,13 @@ socketio.on('connection', socket => {
   
   socket.on('fetch_others', () => {
     socket.emit('all_clients', clients)
+    console.log('look at all the clients: ', clients)
   })
 
-  socket.on('changeAllColors', data => {
-    // Mouse movement
+  socket.on('changeCubeColor', data => {
     var color = data.color
-    // console.log('id of it: ', data.id)
     var obj = {color: color, id: data.id}
+    console.log('obj id to color: ', obj.id)
     clients.forEach((element, index) => {
       if (element.clientId === data.id) {
         // console.log('its a match')
@@ -57,6 +59,7 @@ socketio.on('connection', socket => {
         obj = {color: color, id: element.clientId}
       }
     });
+    console.log('id of it: ', data.id)
     socketio.emit('color', obj)
   })
 
