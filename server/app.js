@@ -16,59 +16,9 @@ var position = {
 }
 
 var color = 0
-
-var id = 0
-
-// Assigning IDs
-// socketio.engine.generateId = function (req) {
-//   // generate a new custom id here
-//   id++
-//   return id
-// }
-
-// var util = require("util"),
-//   io = require('/socket.io').listen(8080),
-//   fs = require('fs'),
-//   os = require('os'),
-//   url = require('url');
-
 var clients =[];
-
-// io.sockets.on('connection', function (socket) {
-
-//     socket.on('storeClientInfo', function (data) {
-
-//         var clientInfo = new Object();
-//         clientInfo.customId         = data.customId;
-//         clientInfo.clientId     = socket.id;
-//         clients.push(clientInfo);
-//     });
-
-//     socket.on('disconnect', function (data) {
-
-//         for( var i=0, len=clients.length; i<len; ++i ){
-//             var c = clients[i];
-
-//             if(c.clientId == socket.id){
-//                 clients.splice(i,1);
-//                 break;
-//             }
-//         }
-
-//     });
-// });
-
-// var clients = [];
-
-// socketio.sockets.on('connect', function(client) {
-//     clients.push(client); 
-
-//     client.on('disconnect', function() {
-//         clients.splice(clients.indexOf(client), 1);
-//     });
-// });
-
-var sortedSockets = []
+// var id = 0
+// var sortedSockets = []
 
 socketio.on('connection', socket => {
   // Log ID
@@ -79,14 +29,6 @@ socketio.on('connection', socket => {
 
   // Set position
   socket.emit('position', position)
-
-  // Increment id
-  id++
-
-  // Logging the unique id
-  Object.keys(socketio.sockets.sockets).forEach(function(id) {
-    console.log("ID: ", id)  // socketId
-  })
 
   var socketPair = {
     // id: id,
@@ -133,9 +75,6 @@ socketio.on('connection', socket => {
     // Store client info
     socketio.emit('storeInfo', clientInfo)
 
-    // var my_id = id; //my_id = value for this exact socket connection
-    id++; //increment global id for further connnections
-    // Tell clients that there is a new one in town
     socket.emit('user_connected', socketPair)
     
     // Send all clients
