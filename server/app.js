@@ -16,82 +16,14 @@ var position = {
 }
 
 var color = 0
-
 var id = 0
-
-// Assigning IDs
-// socketio.engine.generateId = function (req) {
-//   // generate a new custom id here
-//   id++
-//   return id
-// }
-
-// var util = require("util"),
-//   io = require('/socket.io').listen(8080),
-//   fs = require('fs'),
-//   os = require('os'),
-//   url = require('url');
-
 var clients =[];
-
-// io.sockets.on('connection', function (socket) {
-
-//     socket.on('storeClientInfo', function (data) {
-
-//         var clientInfo = new Object();
-//         clientInfo.customId         = data.customId;
-//         clientInfo.clientId     = socket.id;
-//         clients.push(clientInfo);
-//     });
-
-//     socket.on('disconnect', function (data) {
-
-//         for( var i=0, len=clients.length; i<len; ++i ){
-//             var c = clients[i];
-
-//             if(c.clientId == socket.id){
-//                 clients.splice(i,1);
-//                 break;
-//             }
-//         }
-
-//     });
-// });
-
-// var clients = [];
-
-// socketio.sockets.on('connect', function(client) {
-//     clients.push(client); 
-
-//     client.on('disconnect', function() {
-//         clients.splice(clients.indexOf(client), 1);
-//     });
-// });
-
 var sortedSockets = []
 
 socketio.on('connection', socket => {
-  // Log ID
-  // console.log('new id: ', socket.id); // writes 1 on the console
-  
-  // var total = socketio.engine.clientsCount;
-  // socketio.emit('getCount', total)
-
-  // Set position
-  socket.emit('position', position)
-
-  // Increment id
-  id++
-
-  // Logging the unique id
-  Object.keys(socketio.sockets.sockets).forEach(function(id) {
-    console.log("ID: ", id)  // socketId
-  })
-
   var socketPair = {
     // id: id,
-    id: socket.id,
-    uuid: socket.id
+    id: socket.id
   }
 
   // When move is detected
@@ -131,7 +63,7 @@ socketio.on('connection', socket => {
     // clientInfo.hooray = 'yay'
     clients.push(clientInfo);
     // Store client info
-    socketio.emit('storeInfo', clientInfo)
+    // socketio.emit('storeInfo', clientInfo)
 
     // var my_id = id; //my_id = value for this exact socket connection
     id++; //increment global id for further connnections
@@ -139,12 +71,12 @@ socketio.on('connection', socket => {
     socket.emit('user_connected', socketPair)
     
     // Send all clients
-    socket.emit('all_clients', clients)
+    // socket.emit('all_clients', clients)
 
     // Broadcast to all
     var joining = {
       joinId: socket.id,
-      joiners: clients,
+      clients: clients,
     }
     socketio.sockets.emit('broadcast', joining)
     
