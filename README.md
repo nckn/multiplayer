@@ -34,3 +34,6 @@ http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html
 ## TODO
 
 - get other pixel values on connect
+- camera mode, switch between
+- place cubes randomly on x and z
+- tween
