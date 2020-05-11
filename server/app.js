@@ -48,6 +48,7 @@ socketio.on('connection', socket => {
     clients.forEach((element, index) => {
       if (element.clientId === data.id) {
         console.log('its a match')
+        element.color = color
         obj = {color: color, id: element.clientId}
       }
     });
@@ -110,6 +111,7 @@ socketio.on('connection', socket => {
 
 })
 
+// http.listen(3000, '192.168.0.101');
 http.listen(3000, () => {
   console.log(`Server listening on 3000`);
   // console.log(`Server listening on http://${host}:${port}`);
